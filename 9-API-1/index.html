@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Breweries</title>
+</head>
+
+<body>
+    <script>
+        (() => {
+            const $body = document.querySelector('body');
+            const $button = document.createElement('button');
+            $body.append($button);
+            $button.innerText = "Find some breweries";
+            $button.setAttribute('type', 'button');
+            const $input = document.createElement('input');
+            $body.append($input);
+            $input.setAttribute('type', 'text');
+            $input.setAttribute('placeholder', 'Say my name...');
+            const $ol = document.createElement('ol');
+
+            $button.addEventListener("click", () => {
+                $ol.innerText = '';
+                let query = $input.value;
+                $input.value = '';
+                fetch(`https://api.openbrewerydb.org/breweries?by_name=${query}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        data.map((el) => {
+                            let $li = document.createElement('li');
+                            $li.innerText = el.name;
+                            $ol.append($li);
+                            $body.append($ol);
+                        });
+
+                    });
+            });
+        })();
+    </script>
+</body>
+
+</html>
